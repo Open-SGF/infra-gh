@@ -1,0 +1,10 @@
+# Environment files
+.envrc
+
+# OpenTofu
+*.tfstate
+*.tfstate.*
+.tfstate
+.tfplan
+*.log
+.terraform/
