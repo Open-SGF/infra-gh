@@ -115,25 +115,51 @@ module "gooddads_repository" {
   name = "gooddads"
   teams = concat(
     [{
-      id         = module.good_dads_volunteers_team.id
+      id         = module.good_dads_reviewers_team.id
       permission = "triage"
     }],
-    [local.organizers_team],
+    [
+      local.organizers_team,
+      {
+        id         = module.good_dads_maintainers_team.id
+        permission = "push"
+      },
+    ],
   )
 }
 
 module "good_dads_admin_app_repository" {
   source = "./modules/repository"
 
-  name  = "good-dads-admin-app"
-  teams = [local.organizers_team]
+  name = "good-dads-admin-app"
+  teams = [
+    local.organizers_team,
+    {
+      id         = module.good_dads_reviewers_team.id
+      permission = "triage"
+    },
+    {
+      id         = module.good_dads_maintainers_team.id
+      permission = "push"
+    },
+  ]
 }
 
 module "good_dads_companion_app_repository" {
   source = "./modules/repository"
 
-  name  = "good-dads-companion-app"
-  teams = [local.organizers_team]
+  name = "good-dads-companion-app"
+  teams = [
+    local.organizers_team,
+    {
+      id         = module.good_dads_reviewers_team.id
+      permission = "triage"
+    },
+    {
+      id         = module.good_dads_maintainers_team.id
+      permission = "push"
+    },
+  ]
 }
 
 module "healthiermo_repository" {
@@ -192,10 +218,16 @@ module "gooddads_enrollment_bot_repository" {
   }
   teams = concat(
     [{
-      id         = module.good_dads_volunteers_team.id
-      permission = "pull"
+      id         = module.good_dads_reviewers_team.id
+      permission = "triage"
     }],
-    [local.organizers_team],
+    [
+      local.organizers_team,
+      {
+        id         = module.good_dads_maintainers_team.id
+        permission = "push"
+      },
+    ],
   )
 }
 

@@ -1,7 +1,7 @@
-module "good_dads_volunteers_team" {
+module "good_dads_reviewers_team" {
   source = "./modules/team"
 
-  name = "Good Dads Volunteers"
+  name = "Good Dads Reviewers"
   members = [
     {
       username = github_membership.glitchedmob.username
@@ -22,6 +22,21 @@ module "good_dads_volunteers_team" {
     },
     {
       username = github_membership.nomedis.username
+    },
+  ]
+}
+
+module "good_dads_maintainers_team" {
+  source = "./modules/team"
+
+  name = "Good Dads Maintainers"
+  members = [
+    {
+      username = github_membership.ntoombs19.username
+    },
+    {
+      username = github_membership.jugglingdev.username
+      role     = "maintainer"
     },
   ]
 }
