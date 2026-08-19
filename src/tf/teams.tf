@@ -42,6 +42,21 @@ module "organizers_team" {
   ]
 }
 
+module "infra_maintainers_team" {
+  source = "./modules/team"
+
+  name = "Infra Maintainers"
+  members = [
+    {
+      username = github_membership.glitchedmob.username
+      role     = "maintainer"
+    },
+    {
+      username = github_membership.sm0862512.username
+    },
+  ]
+}
+
 module "take_shelter_now_volunteers_team" {
   source = "./modules/team"
 

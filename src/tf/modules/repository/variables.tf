@@ -32,6 +32,16 @@ variable "topics" {
   default     = []
 }
 
+variable "template" {
+  description = "Template repository used to create the repository"
+  type = object({
+    owner                = string
+    repository           = string
+    include_all_branches = optional(bool, false)
+  })
+  default = null
+}
+
 variable "required_checks" {
   description = "Status checks required before merging"
   type = set(object({

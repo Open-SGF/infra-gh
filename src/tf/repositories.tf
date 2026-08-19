@@ -6,6 +6,18 @@ locals {
     permission = "admin"
     bypass     = true
   }
+
+  infrastructure_repositories = {
+    infra-aws-core = {
+      description = "Open SGF shared AWS foundation infrastructure"
+    }
+    infra-dns = {
+      description = "Open SGF DNS infrastructure as code"
+    }
+    infra-gh = {
+      description = "Manages OpenSGF GitHub organization configuration with OpenTofu"
+    }
+  }
 }
 
 module "portal_to_work_app_old_repository" {
@@ -174,6 +186,10 @@ module "gooddads_enrollment_bot_repository" {
   source = "./modules/repository"
 
   name = "gooddads-enrollment-bot"
+  template = {
+    owner      = "Open-SGF"
+    repository = "project-template"
+  }
   teams = concat(
     [{
       id         = module.good_dads_volunteers_team.id
@@ -183,26 +199,23 @@ module "gooddads_enrollment_bot_repository" {
   )
 }
 
-module "infra_aws_core_repository" {
+module "infrastructure_repository" {
+  for_each = local.infrastructure_repositories
+
   source = "./modules/repository"
 
-  name        = "infra-aws-core"
-  description = "Open SGF shared AWS foundation infrastructure"
-  teams       = [local.organizers_team]
-}
-
-module "infra_dns_repository" {
-  source = "./modules/repository"
-
-  name        = "infra-dns"
-  description = "Open SGF DNS infrastructure as code"
-  teams       = [local.organizers_team]
-}
-
-module "infra_gh_repository" {
-  source = "./modules/repository"
-
-  name        = "infra-gh"
-  description = "Manages OpenSGF GitHub organization configuration with OpenTofu"
-  teams       = [local.organizers_team]
+  name        = each.key
+  description = each.value.description
+  topics      = ["infra"]
+  required_checks = [{
+    context        = "Terraform checks"
+    integration_id = local.github_actions_integration_id
+  }]
+  teams = [
+    local.organizers_team,
+    {
+      id         = module.infra_maintainers_team.id
+      permission = "maintain"
+    },
+  ]
 }

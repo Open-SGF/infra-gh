@@ -20,6 +20,16 @@ resource "github_repository" "this" {
   squash_merge_commit_message = "PR_BODY"
 
   delete_branch_on_merge = true
+
+  dynamic "template" {
+    for_each = var.template == null ? [] : [var.template]
+
+    content {
+      owner                = template.value.owner
+      repository           = template.value.repository
+      include_all_branches = template.value.include_all_branches
+    }
+  }
 }
 
 resource "github_team_repository" "this" {
