@@ -10,7 +10,7 @@ resource "github_repository" "this" {
   has_wiki        = false
   has_discussions = false
 
-  allow_merge_commit  = false
+  allow_merge_commit  = var.allow_merge_commit
   allow_squash_merge  = true
   allow_rebase_merge  = true
   allow_auto_merge    = true
@@ -66,10 +66,10 @@ resource "github_repository_ruleset" "main" {
   rules {
     deletion                = true
     non_fast_forward        = true
-    required_linear_history = true
+    required_linear_history = !var.allow_merge_commit
 
     pull_request {
-      allowed_merge_methods             = ["rebase", "squash"]
+      allowed_merge_methods             = var.allow_merge_commit ? ["merge", "rebase", "squash"] : ["rebase", "squash"]
       dismiss_stale_reviews_on_push     = true
       required_approving_review_count   = var.required_approving_review_count
       required_review_thread_resolution = true
