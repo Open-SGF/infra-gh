@@ -35,6 +35,8 @@ module "opensgf_org_repository" {
   homepage_url = "https://www.opensgf.com/"
   topics       = ["hacktoberfest"]
   teams        = [local.organizers_team]
+
+  allow_merge_commit = true
 }
 
 module "brigade_information_repository" {

@@ -42,6 +42,12 @@ variable "template" {
   default = null
 }
 
+variable "allow_merge_commit" {
+  description = "Allow merge commits and non-linear history"
+  type        = bool
+  default     = false
+}
+
 variable "required_checks" {
   description = "Status checks required before merging"
   type = set(object({
